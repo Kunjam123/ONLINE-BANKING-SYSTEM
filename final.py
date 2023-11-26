@@ -425,13 +425,6 @@ def get_last_loan_id():
     return last_id if last_id else 0  # Return 0 if no loans exist
 
 
-# Function to add loan
-'''def add_loan(type, loan_amount, cust_id, branch_no):
-    last_id = get_last_loan_id()
-    new_id = last_id + 1
-    query = f"INSERT INTO loans (loan_id, type, loan_amount, cust_id, branch_no) VALUES ('{new_id}','{type}', '{loan_amount}', '{cust_id}','{branch_no}')"
-    execute_query(query)'''
-
 def add_loan(type, loan_amount, cust_id, branch_no):
     last_id = get_last_loan_id()
     new_id = last_id + 1
@@ -457,45 +450,7 @@ def get_last_loanpy_id():
     cursor.close()
     return last_id if last_id else 0 
 
-# Function to pay loan and update status
-'''def pay_loan(loan_id, cust_id, date, amount_paid):
-    last_id = get_last_loanpy_id()
-    new_id = last_id + 1
-    try:
-        # Fetch current loan amount and status
-        query = "SELECT loan_amount, status FROM Loans WHERE loan_id = {loan_id} AND cust_id = {cust_id}"
-        loan_info = execute_query(query)
-        
-        if len(loan_info) > 0:
-            current_loan_amount, status = loan_info[0]
-            
-            amount_paid_decimal = Decimal(str(amount_paid))
-            
-            # Update loan amount after payment
-            new_loan_amount = max(current_loan_amount - amount_paid_decimal, Decimal('0.00'))  # Ensure the loan amount doesn't go below zero
-
-
-            # Update status based on the remaining amount
-            new_status = 'paid' if new_loan_amount == Decimal('0.00') else 'pending'
-
-            # Update the loan amount and status in the Loans table
-            #update_query = "UPDATE Loans SET loan_amount = %s, status = %s WHERE loan_id = %s" % (new_loan_amount, new_status, loan_id)
-            #update_query=f"UPDATE Loans (loan_amount, status, loan_id) VALUES ('{new_loan_amount}','{new_status}', '{loan_id}')"
-            #execute_query(update_query)
-            #print(result)
-            inf = "SELECT repayment_due FROM Loans WHERE loan_id = {loan_id} AND cust_id = {cust_id}"
-            rep = execute_query(inf)
-
-            update_query = f"UPDATE Loans SET loan_amount = {new_loan_amount}, status = '{new_status}' WHERE loan_id = {loan_id} AND cust_id = {cust_id}"
-            execute_query(update_query)
-            loanpy_query = f"UPDATE LoanPayment SET payment_id = {new_id}, date_of_repayment = {date}, repayment_due = {rep}  WHERE loan_id = {loan_id} AND cust_id = {cust_id}"
-            execute_query(loanpy_query)
-            st.success(f"Loan ID {loan_id} payment processed. New loan amount: {new_loan_amount}. Loan status: {new_status}")
-        else:
-            st.error("Loan ID not found")
-    except mysql.connector.Error as e:
-        st.error(f"Error paying loan: {e}")'''
-
+   
 def pay_loan(loan_id, cust_id, date, amount_paid):
     try:
         last_id = get_last_loanpy_id()
